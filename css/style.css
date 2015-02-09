@@ -8,4 +8,15 @@ and open the template in the editor.
     Author     : Anthony
 */
 
-body { padding-top: -70px; }
+body { 
+    padding-top: -70px;
+    margin: 0;
+}
+html, body, #map {
+    height: 100%;
+
+}
+
+#map{
+    margin-top: 50px;
+}
