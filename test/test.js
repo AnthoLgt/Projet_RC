@@ -77,7 +77,7 @@ $.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&api
         if(data3.stat != 'fail') {
         //    pLocation = '<a href="http://www.flickr.com/map?fLat=' + data.photo.location.latitude + '&amp;fLon=' + data.photo.location.longitude + '&amp;zl=1" target="_blank">' + data.photo.location.locality._content + ', ' + data.photo.location.region._content + ' (Click for Map)</a>';
         }
-        console.log(data3);
+
         var count = Object.keys(data3).length
         console.log("compte :"+count);
         
