@@ -69,31 +69,43 @@ $.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&api
         
     });
     
-var data = {};   
-$.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=' + apiKey + '&woe_id=23424819&min_taken_date=2014-01-01&min_upload_date=2014-01-01&has_geo=1&extras=geo&format=json&nojsoncallback=1',
+var data = {};
+var cpt = 1;
+var nbpages;
+$.ajaxSetup({
+    async: false
+})
+do {
+$.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=' + apiKey + '&tags=dogs&woe_id=23424819&min_taken_date=2014-01-01&min_upload_date=2014-01-01&has_geo=1&page='+cpt+'&extras=geo&format=json&nojsoncallback=1',
     function(data3){
-        
+        nbpages = data3.photos.pages
+        console.log(nbpages)
         //if the image has a location, build an html snippet containing the data
         if(data3.stat != 'fail') {
         //    pLocation = '<a href="http://www.flickr.com/map?fLat=' + data.photo.location.latitude + '&amp;fLon=' + data.photo.location.longitude + '&amp;zl=1" target="_blank">' + data.photo.location.locality._content + ', ' + data.photo.location.region._content + ' (Click for Map)</a>';
         }
 
-        var count = Object.keys(data3).length
-        console.log("compte :"+count);
         
-        for(key in data3){
-            console.log(key);
-            for(key2 in data3[key]){
+        //console.log("compte :"+count);
+        
+        //for(key in data3){
+        //    console.log(key);
+        //    for(key2 in data3[key]){
               //  console.log(key2[photo][0][title])
               //  console.log(key2);
-            }
-        }
+        //    }
+        //}
         //console.log(data3.photos.photo[0].title);
         //console.log(data3.photos.photo);
         var i = 0;
-        $.each(data3.photos.photo, function(i, item) {
-            i= i +1;
-        });
-        alert(i);
+        data = data3.photos
+        console.log(data)
+        //$.each(data3.photos.photo, function(i, item) {
+        //    i= i +1;
+        //});
+        //alert(i);
+        
+    console.log(cpt+"<"+nbpages)
+    cpt++;
     });
-    
+} while (cpt < nbpages);
