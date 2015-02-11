@@ -108,4 +108,4 @@ $.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&api
     console.log(cpt+"<"+nbpages)
     cpt++;
     });
-} while (cpt < nbpages);
+} while (cpt <= nbpages);

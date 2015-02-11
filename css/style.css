@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 
 body { 
-    padding-top: -70px;
+    padding: 0;
     margin: 0;
 }
 html, body, #map {
@@ -17,6 +17,3 @@ html, body, #map {
 
 }
 
-#map{
-    margin-top: 50px;
-}
