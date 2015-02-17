@@ -16,13 +16,29 @@ and open the template in the editor.
     </head>
     <body>
         <div id="map"></div>
+        <div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                   <!-- <div class="modal-header"></div>-->
+                    <div class="modal-body">
+                        <h4 class="modal-title" id="modal-titleh4" style="text-align: center">Modal title</h4>
+                    </div>
+                    <div class="modal-footer" style="text-align: center"><i class="fa fa-spinner fa-pulse fa-lg"></i></div>
+                </div>
+            </div>
+        </div>
         <script src="assets/jquery/jquery.js" type="text/javascript"></script>
         <script src="assets/bootstrap-3.3.2-dist/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="assets/d3/d3.v3.js" type="text/javascript"></script>
         <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
+        <script src="script/constantes.js" type="text/javascript"></script>
+                <script src="script/map.js" type="text/javascript"></script>
+        <script src="script/display.js" type="text/javascript"></script>
         <script src="data/dog.js" type="text/javascript"></script>
-        <script src="script/map.js" type="text/javascript"></script>
-      <!--  <script src="script/searchPhoto.js" type="text/javascript"></script> -->
-        <script src="script/searchPhotoD3.js" type="text/javascript"></script>
+
+        <script src="script/ihm.js" type="text/javascript"></script>
+        <script src="script/searchPhoto.js" type="text/javascript"></script>
+        <script src="script/search.js" type="text/javascript"></script>
+        <script src="script/run.js" type="text/javascript"></script>
     </body>
 </html>
