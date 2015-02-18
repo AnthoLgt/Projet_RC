@@ -49,7 +49,7 @@ function getAllPageFlick(nbPages, tags, woe, minDate){
             Data = Data.concat(data);
             $.each(data3.photos.photo, function(i, item) {
 
-                createCircle(item.latitude, item.longitude,700);
+            //    createCircle(item.latitude, item.longitude,700);
 
             }); 
           //   console.log("width="+parseInt(widthOld)+"+"+100/nbPages+"="+(parseInt(widthOld)+100/nbPages))
@@ -59,8 +59,20 @@ function getAllPageFlick(nbPages, tags, woe, minDate){
 
             if(Data.length === nbPages){
              //   console.log(Data)
-                
-                ALL_DATA[tags] = Data;
+                var DataAllPages = [];
+                var cpt= 0;
+                $.each(Data, function(i, pages) {
+                    console.log(pages);
+                    var photos = pages.photo
+                    $.each(photos, function(j, photo){
+                         console.log(photo.latitude);
+                         DataAllPages[cpt] = photo;
+                         cpt++;
+                    });
+                });
+                console.log("ici"+cpt)
+                console.log(DataAllPages)
+                ALL_DATA[tags] = DataAllPages;
            //     console.log(ALL_DATA);
                 displayFlickrResult(ALL_DATA[tags], NIGHT_MODE, DATE_DEFAULT); // En travaux...
             }
