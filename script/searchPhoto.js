@@ -5,9 +5,7 @@ var cpt = 1;
 var nbPages;
 var nbPhotos = 0;
 
-var Data = [];
-// woe 23424819
-// date  2014-01-01
+
 function flickSearch(woe, tags, minDate){
 
     console.log("flickSearch");
@@ -31,6 +29,7 @@ function flickSearch(woe, tags, minDate){
 function getAllPageFlick(nbPages, tags, woe, minDate){   
      
     var cpt = 1;
+    var Data = [];
     console.log(cpt+" "+nbPages)
     do {
     
@@ -47,36 +46,61 @@ function getAllPageFlick(nbPages, tags, woe, minDate){
             var i = 0;
             data = data3.photos
             Data = Data.concat(data);
-            $.each(data3.photos.photo, function(i, item) {
 
-            //    createCircle(item.latitude, item.longitude,700);
-
-            }); 
-          //   console.log("width="+parseInt(widthOld)+"+"+100/nbPages+"="+(parseInt(widthOld)+100/nbPages))
-          //      console.log(cpt+"<"+nbPages+"="+(parseInt(widthOld)+100/nbPages))
-          //  console.log(data)
-          //    console.log(Data)
 
             if(Data.length === nbPages){
-             //   console.log(Data)
+                //   console.log(Data)
                 var DataAllPages = [];
                 var cpt= 0;
                 $.each(Data, function(i, pages) {
-                    console.log(pages);
                     var photos = pages.photo
                     $.each(photos, function(j, photo){
-                         console.log(photo.latitude);
-                         DataAllPages[cpt] = photo;
-                         cpt++;
+                        DataAllPages[cpt] = photo;
+                        cpt++;
                     });
                 });
-                console.log("ici"+cpt)
-                console.log(DataAllPages)
-                ALL_DATA[tags] = DataAllPages;
-           //     console.log(ALL_DATA);
-                displayFlickrResult(ALL_DATA[tags], NIGHT_MODE, DATE_DEFAULT); // En travaux...
+                var tagsProper = tags.replace(" ","-"); // Pour enlever les problèmes des classes CSS
+                tagsProper = tagsProper.replace(",","-"); // Pour enlever les problèmes des classes CSS
+                ALL_DATA[tagsProper] = DataAllPages;
+                
+                var availableRed = true;
+                var availableBlue = true;
+                var availableYellow = true;
+                for(tag in Object.keys(COLOR_TAG)){
+                   // var nomTag = Object.keys(COLOR_TAG)[tag];
+                    if((COLOR_TAG)[Object.keys(COLOR_TAG)[tag]] === RED){
+                        availableRed = false;
+                    } else if((COLOR_TAG)[Object.keys(COLOR_TAG)[tag]] === BLUE){
+                        availableBlue = false;
+                    } else if((COLOR_TAG)[Object.keys(COLOR_TAG)[tag]] === YELLOW){
+                        availableYellow = false;
+                    }  
+
+                }
+                if(availableRed){
+                    console.log("rouge")
+                    COLOR_TAG[tagsProper] = RED;
+                }else if(availableBlue){
+                    console.log("bleu")
+                    COLOR_TAG[tagsProper] = BLUE;
+                }else if(availableYellow){
+                    console.log("jaune")
+                    COLOR_TAG[tagsProper] = YELLOW;
+                }
+                console.log(COLOR_TAG)
+                //     console.log(ALL_DATA);
+                var cpt = 0;
+
+
+               var htmlTags = '';
+               for(tag in Object.keys(COLOR_TAG)){
+                   var nomTag = Object.keys(COLOR_TAG)[tag];
+                   htmlTags = htmlTags + '<label><input type="checkbox" checked><span id="badge-tag-'+nomTag+'"class="badge" style="background-color:'+(COLOR_TAG)[nomTag]+'" onclick="removeTag(\''+nomTag+'\');">'+nomTag+' <i class="fa fa-times"></i></span></label><br>' 
+                   cpt++
+               }
+               $('#tagsCheckBox').html(htmlTags);
+               displayFlickrResult(tagsProper, NIGHT_MODE, DATE_DEFAULT);
             }
-        
         });
         cpt++;
     } while (cpt <= nbPages);

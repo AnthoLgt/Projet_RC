@@ -69,11 +69,7 @@ function createIHM(){
                         div.innerHTML = '\
                             <i class="fa fa-tags"></i>Tags : \
                             <div id="tagsCheckBox" class="checkbox">\
-                            <label><input type="checkbox"><span class="badge" style="background-color:'+RED+'">tag1 <i class="fa fa-times"></i></span></label><br>\
-                            <label><input type="checkbox"><span class="badge" style="background-color:'+BLUE+'">tag2 <i class="fa fa-times"></i></span></label><br>\
-                            <label><input type="checkbox"><span class="badge" style="background-color:'+YELLOW+'">tag3 <i class="fa fa-times"></i></span></label><br>\
-                            <label><input type="checkbox"><span class="badge" style="background-color:'+GREEN+'">tag4 <i class="fa fa-times"></i></span></label><br>\
-                            <label><input type="checkbox"><span class="badge" style="background-color:'+PURPLE+'">tag5 <i class="fa fa-times"></i></span></label><br>\
+                            <span style="color:grey; text-align=center"><i>Aucun tag</i></span>\
                             </div>\
                             '; 
                         div.setAttribute("class","control")			

@@ -15,4 +15,5 @@ var GREEN = "#00B050";
 var YELLOW = "#FFC106";
 var PURPLE = "#7030A0";
 
+var COLOR_TAG = [];
 

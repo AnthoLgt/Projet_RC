@@ -1,29 +1,60 @@
 
 
-function displayFlickrResult(Data, NIGHT_MODE, periode){
+function displayFlickrResult(tag, NIGHT_MODE, periode){
     
-    var cpt=0;
-    console.log(Data)
+    var indexTag=0;
+    var photoTag1, photoTag2, photoTag3;
+    for(indexTag = 0; indexTag < Object.keys(ALL_DATA).length; indexTag++){
+        if(Object.keys(ALL_DATA)[tag] === tag){ 
+            break;
+        }
+    }
+    
 
+  /*  if(photoTag1==0){
+        photoTag1 = ALL_DATA[tag];
+    }else if(photoTag2==1){
+        photoTag2 = ALL_DATA[tag];
+    }*/
+                
+    indexTag = indexTag - 1;
+  //  console.log(ALL_DATA)
+    console.log((ALL_DATA)[tag].length)
+    console.log((ALL_DATA))
+    var cpt = 0;
+    var circles = d3.select("g").selectAll("circle[class='circle-"+tag+"']") // Très important !
+    .data((ALL_DATA)[tag])
+    .enter().append("circle")
+    .attr("r", "3")
+    .attr("class", "circle-"+tag)
+    .attr("fill", COLOR_TAG[tag])
+    .style("stroke", d3.rgb(COLOR_TAG[tag]).darker())
+    .attr("cx", function (d) { cpt++;return project(d.longitude, d.latitude).x; })
+    .attr("cy", function (d) { return project(d.longitude, d.latitude).y; });
+ console.log("tag= "+tag+" couleur="+COLOR_TAG[tag]+" occur="+cpt)
 
-            var circles = d3.select("g").selectAll("circle")
-            .data(Data)
-            .enter().append("circle")
-            .attr("r", "3")
-            .attr("fill", "red").attr("cx", function (d) { cpt++; return project(d.longitude, d.latitude).x; })
-           .attr("cy", function (d) { return project(d.longitude, d.latitude).y; });
-   
-          /*  map.on("viewreset", update);
+    topBnd = Math.max.apply(Math,(ALL_DATA)[tag].map(function(o){return o.latitude;}));
+    bottomBnd = Math.min.apply(Math,(ALL_DATA)[tag].map(function(o){return o.latitude;}));
+    leftBnd = Math.min.apply(Math,(ALL_DATA)[tag].map(function(o){return o.longitude;}));
+    rightBnd = Math.max.apply(Math,(ALL_DATA)[tag].map(function(o){return o.longitude;}));
+    
+            map.on("viewreset", update);
 	    update();
             function update() {
-			circles.attr("transform", 
-			function(d) { 
-				return "translate("+ 
-					project(d.longitude, d.latitude).x +","+ 
-					project(d.longitude, d.latitude).y +")";
-				}
-			)
-            } */
+                                
+                    bottomLeft = project(leftBnd, bottomBnd);
+                    topRight = project(rightBnd, topBnd);
+
+                    svg.attr("width", topRight.x - bottomLeft.x)
+                        .attr("height", bottomLeft.y - topRight.y)
+                        .style("margin-left", bottomLeft.x + "px")
+                        .style("margin-top", topRight.y + "px");
+                    g.attr("transform", "translate(" + -bottomLeft.x + "," + -topRight.y + ")");
+			circles.attr("fill", COLOR_TAG[tag])
+                        .style("stroke", d3.rgb(COLOR_TAG[tag]).darker())
+                        .attr("cx", function (d) { return project(d.longitude, d.latitude).x; })
+                        .attr("cy", function (d) { return project(d.longitude, d.latitude).y; });
+            }
         
         //   $.each(photos, function(i, photo) {
 
@@ -33,10 +64,7 @@ function displayFlickrResult(Data, NIGHT_MODE, periode){
     //    });
         //createCircle(item.latitude, item.longitude,700);
 
-
-  //  alert(cpt)
-   console.log(Data)
-  //  console.log(Data.pages.photo)
+        //alert(cpt)
   
   /*
     var circles = d3.select("g").selectAll("circle")
@@ -52,6 +80,5 @@ function displayFlickrResult(Data, NIGHT_MODE, periode){
 
 
 function project(longitude,latitude) {
-    console.log(longitude+" "+latitude)
     return map.latLngToLayerPoint(new L.LatLng(latitude, longitude));
 }
