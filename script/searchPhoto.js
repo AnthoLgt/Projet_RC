@@ -78,13 +78,10 @@ function getAllPageFlick(nbPages, tags, woe, minDate){
 
                 }
                 if(availableRed){
-                    console.log("rouge")
                     COLOR_TAG[tagsProper] = RED;
                 }else if(availableBlue){
-                    console.log("bleu")
                     COLOR_TAG[tagsProper] = BLUE;
                 }else if(availableYellow){
-                    console.log("jaune")
                     COLOR_TAG[tagsProper] = YELLOW;
                 }
                 console.log(COLOR_TAG)
@@ -95,7 +92,7 @@ function getAllPageFlick(nbPages, tags, woe, minDate){
                var htmlTags = '';
                for(tag in Object.keys(COLOR_TAG)){
                    var nomTag = Object.keys(COLOR_TAG)[tag];
-                   htmlTags = htmlTags + '<label><input type="checkbox" checked><span id="badge-tag-'+nomTag+'"class="badge" style="background-color:'+(COLOR_TAG)[nomTag]+'" onclick="removeTag(\''+nomTag+'\');">'+nomTag+' <i class="fa fa-times"></i></span></label><br>' 
+                   htmlTags = htmlTags + '<label><input type="checkbox" onchange="showTag(\''+nomTag+'\');" checked><span id="badge-tag-'+nomTag+'"class="badge" style="background-color:'+(COLOR_TAG)[nomTag]+'" onclick="removeTag(\''+nomTag+'\');">'+nomTag+' <i class="fa fa-times"></i></span></label><br>' 
                    cpt++
                }
                $('#tagsCheckBox').html(htmlTags);

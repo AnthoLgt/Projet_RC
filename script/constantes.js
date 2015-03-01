@@ -17,3 +17,4 @@ var PURPLE = "#7030A0";
 
 var COLOR_TAG = [];
 
+var displayTag = [];

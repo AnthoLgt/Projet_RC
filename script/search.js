@@ -41,11 +41,26 @@ function removeTag(tag){
     var htmlTags = '';
     for(tag in Object.keys(COLOR_TAG)){
         var nomTag = Object.keys(COLOR_TAG)[tag];
-        htmlTags = htmlTags + '<label><input type="checkbox" checked><span id="badge-tag-'+nomTag+'"class="badge" style="background-color:'+(COLOR_TAG)[nomTag]+'" onclick="removeTag(\''+nomTag+'\');">'+nomTag+' <i class="fa fa-times"></i></span></label><br>' 
+        htmlTags = htmlTags + '<label><input type="checkbox" onchange="showTag(\''+nomTag+'\');" checked><span id="badge-tag-'+nomTag+'"class="badge" style="background-color:'+(COLOR_TAG)[nomTag]+'" onclick="removeTag(\''+nomTag+'\');">'+nomTag+' <i class="fa fa-times"></i></span></label><br>' 
     }
     if(Object.keys(ALL_DATA).length == 0){
         $('#tagsCheckBox').html("<span style=\"color:grey; text-align=center\"><i>Aucun tag</i></span>");
     }else{
         $('#tagsCheckBox').html(htmlTags);
     }
+}
+
+function showTag(tag){
+    
+    if(typeof(displayTag[tag]) === 'undefined') {
+        displayTag[tag] = true; // Initialisation
+    }
+    
+    if(displayTag[tag]){
+        $('.circle-'+tag+'').hide();
+        displayTag[tag] = false;            
+    }else{
+        $('.circle-'+tag+'').show();
+        displayTag[tag] = true;     
+    }       
 }
