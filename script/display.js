@@ -56,24 +56,7 @@ function displayFlickrResult(tag, NIGHT_MODE, periode){
                         .attr("cy", function (d) { return project(d.longitude, d.latitude).y; });
             }
         
-        //   $.each(photos, function(i, photo) {
 
-            
-           // console.log(photo.latitude);
-
-    //    });
-        //createCircle(item.latitude, item.longitude,700);
-
-        //alert(cpt)
-  
-  /*
-    var circles = d3.select("g").selectAll("circle")
-            .data(Data.pages.photo)
-            .enter().append("circle")
-            .attr("r", "300")
-            .attr("fill", "red").attr("cx", function (d) { return project(d.longitude).x; })
-           .attr("cy", function (d) { return project(d.latitude).y; });
-    */
     $('#myModal').modal('hide');
 }
 

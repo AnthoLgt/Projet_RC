@@ -10,7 +10,7 @@ function flickSearch(woe, tags, minDate){
 
     console.log("flickSearch");
     var Data = [];
-     $.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=' + API_KEY + '&accuracy=16&tags='+ tags +'&woe_id='+ woe+'&min_taken_date='+ minDate +'&min_upload_date='+ minDate +'&has_geo=1&page='+cpt+'&extras=geo&format=json&nojsoncallback=1',
+     $.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=' + API_KEY + '&accuracy=16&tags='+ tags +'&woe_id='+ woe+'&min_taken_date='+ minDate +'&min_upload_date='+ minDate +'&has_geo=1&page='+cpt+'&format=json&nojsoncallback=1',
         function(data3){
             nbPages = data3.photos.pages
             nbPhotos = data3.photos.total
@@ -33,14 +33,14 @@ function getAllPageFlick(nbPages, tags, woe, minDate){
     console.log(cpt+" "+nbPages)
     do {
     
-    $.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=' + API_KEY + '&accuracy=16&tags='+ tags +'&woe_id='+ woe+'&min_taken_date='+ minDate +'&min_upload_date='+ minDate +'&has_geo=1&page='+cpt+'&extras=geo&format=json&nojsoncallback=1',
+    $.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=' + API_KEY + '&accuracy=16&tags='+ tags +'&woe_id='+ woe+'&min_taken_date='+ minDate +'&min_upload_date='+ minDate +'&has_geo=1&page='+cpt+'&extras=geo,date_taken&format=json&nojsoncallback=1',
         function(data3){
             
             nbPages = data3.photos.pages
             currentPage = data3.photos.page
             //if the image has a location, build an html snippet containing the data
             if(data3.stat != 'fail') {
-            //    pLocation = '<a href="http://www.flickr.com/map?fLat=' + data.photo.location.latitude + '&amp;fLon=' + data.photo.location.longitude + '&amp;zl=1" target="_blank">' + data.photo.location.locality._content + ', ' + data.photo.location.region._content + ' (Click for Map)</a>';
+            
             }
 
             var i = 0;
@@ -52,6 +52,7 @@ function getAllPageFlick(nbPages, tags, woe, minDate){
                 //   console.log(Data)
                 var DataAllPages = [];
                 var cpt= 0;
+                
                 $.each(Data, function(i, pages) {
                     var photos = pages.photo
                     $.each(photos, function(j, photo){
@@ -62,6 +63,25 @@ function getAllPageFlick(nbPages, tags, woe, minDate){
                 var tagsProper = tags.replace(" ","-"); // Pour enlever les problèmes des classes CSS
                 tagsProper = tagsProper.replace(",","-"); // Pour enlever les problèmes des classes CSS
                 ALL_DATA[tagsProper] = DataAllPages;
+                ALL_DATA_NIGHT[tagsProper] = [];
+                DISPLAY_TAG[tagsProper] = true; 
+                console.log(ALL_DATA_NIGHT.length);
+                // Sélection des photos prises de nuit
+                $.each(ALL_DATA[tagsProper], function(i, photo) {
+                    var date = photo.datetaken;
+                    var mois= date.split(" ")[0].split("-")[1];
+                    var heure = date.split(" ")[1].split(":")[0];
+                    console.log(date)
+                    if(heure < 7 || heure > 21){ // Nuit
+                        ALL_DATA_NIGHT[tagsProper].push(photo);
+                    }
+                    
+                    // Saisons ?
+                });
+                
+                        console.log(ALL_DATA_NIGHT[tagsProper])
+                console.log("night :"+ALL_DATA_NIGHT[tagsProper].length+" all:"+ALL_DATA[tagsProper].length);
+                
                 
                 var availableRed = true;
                 var availableBlue = true;
@@ -89,13 +109,7 @@ function getAllPageFlick(nbPages, tags, woe, minDate){
                 var cpt = 0;
 
 
-               var htmlTags = '';
-               for(tag in Object.keys(COLOR_TAG)){
-                   var nomTag = Object.keys(COLOR_TAG)[tag];
-                   htmlTags = htmlTags + '<label><input type="checkbox" onchange="showTag(\''+nomTag+'\');" checked><span id="badge-tag-'+nomTag+'"class="badge" style="background-color:'+(COLOR_TAG)[nomTag]+'" onclick="removeTag(\''+nomTag+'\');">'+nomTag+' <i class="fa fa-times"></i></span></label><br>' 
-                   cpt++
-               }
-               $('#tagsCheckBox').html(htmlTags);
+                showListTag();
                displayFlickrResult(tagsProper, NIGHT_MODE, DATE_DEFAULT);
             }
         });
