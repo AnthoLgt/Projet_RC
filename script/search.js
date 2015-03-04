@@ -1,7 +1,6 @@
 
 
 function search(tags){
-
     if(Object.keys(ALL_DATA).length < 3){
        flickSearch(WOE_ID, tags, "2013-01-01");
     }
@@ -10,19 +9,15 @@ function search(tags){
     }
 }
 
-function removeTag(tag){
-    
+function removeTag(tag){    
     $(".circle-"+tag).remove();
     delete ALL_DATA[tag];
     delete COLOR_TAG[tag];
-    console.log(ALL_DATA);
-    console.log(COLOR_TAG);
-    console.log("couleur "+tag+" "+COLOR_TAG[tag])
-showListTag();
+    showListTag();
+    
 }
 
 function showTag(tag){
-   
     if(DISPLAY_TAG[tag]){
         $('.circle-'+tag+'').hide();
         DISPLAY_TAG[tag] = false;            
@@ -48,7 +43,5 @@ function showListTag(){
         $('#tagsCheckBox').html("<span style=\"color:grey; text-align=center\"><i>Aucun tag</i></span>");
     }else{
         $('#tagsCheckBox').html(htmlTags);
-    }
-    
-    console.log(DISPLAY_TAG)
+    }    
 }

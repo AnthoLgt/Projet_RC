@@ -30,9 +30,18 @@ function createIHM(){
         if(NIGHT_MODE){            
             $(this).css('background', '#000');
             $(this).css('color', '#fff');
+            //http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png
+            L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                maxZoom: 18
+            }).addTo(map);
         }else{
             $(this).css('background', '#fff');
-            $(this).css('color', '#000');      
+            $(this).css('color', '#000');
+            L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                maxZoom: 18
+            }).addTo(map);
         }
     });
 
