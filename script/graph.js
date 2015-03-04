@@ -73,7 +73,7 @@ function graphPopulation() {
 
 
 function photoTagByRegion(tags) {
-    var REGION = {};
+    var REGION = [];
     var photoRegion = [];
 
     
@@ -88,22 +88,22 @@ function photoTagByRegion(tags) {
             $.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=' + API_KEY + '&accuracy=16&tags='+ tags +'&woe_id='+ data[i].woeid +'&min_taken_date='+ DATE_DEFAULT +'&min_upload_date='+ DATE_DEFAULT +'&has_geo=1&page=1&extras=geo&format=json&nojsoncallback=1',
                 region,function(data3){
                     //console.log(data3.photos.total)
-                    console.log(data3)
+                    //console.log(data3)
                     nbPhotos = data3.photos.total;
                   //  photoRegion[i] = nbPhotos;
 
                     var tmp = {};
-                    tmp[this.region] = nbPhotos;
-
-                    REGION[this.region] = nbPhotos
-                    //REGION.push([this.region, nbPhotos])
-                    
-                    
+                    tmp["region"] = this.region;
+                    tmp["nbPhotoTag"+Object.keys(ALL_DATA).indexOf(tags)] = nbPhotos;
+                   // console.log(tmp)
+                    //REGION[this.region] = nbPhotos
+                    REGION.push(tmp)
+     
                     if(Object.keys(REGION).length === 22){
                        console.log(REGION)
                        
                        for(regionCur in Object.keys(REGION)){
-                           console.log(Object.keys(REGION)[regionCur]+"="+(REGION)[Object.keys(REGION)[regionCur]])
+                           //console.log(Object.keys(REGION)[regionCur]+"="+(REGION)[Object.keys(REGION)[regionCur]])
                        }
                     }
                 }.bind({region:region}));
@@ -113,19 +113,19 @@ function photoTagByRegion(tags) {
     });
     
     
-    return photoRegion;
+    return REGION;
 }
 
 function photosRegion() {
     var array = [1,2,3]
-    ALL_DATA = {"dogs":array}
+    ALL_DATA = {"dogs":array, "cats":array}
     var photosTags = [];
     var tags = Object.keys(ALL_DATA);
-    console.log(tags)
+    //console.log(tags)
     for(i = 0; i < tags.length; i++) {
         photosTags[i] = photoTagByRegion(tags[i]);
     }
-    console.log(photosTags);
+    console.log("HERE"+photosTags);
     
     return photosTags;
 }
@@ -133,7 +133,6 @@ function photosRegion() {
 var photosR = photosRegion();
 
 function groupedBarChart() {
-    
     
     var margin = {top: 20, right: 20, bottom: 90, left: 70},
         width = 500 - margin.left - margin.right,
@@ -247,6 +246,6 @@ function groupedBarChart() {
 
 //graphPopulation();
 
-groupedBarChart();
+//groupedBarChart();
 
 
