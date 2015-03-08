@@ -1,18 +1,9 @@
 
 
-function displayFlickrResult(tag, NIGHT_MODE, periode){
-    
-    var indexTag=0;
-    
-    for(indexTag = 0; indexTag < Object.keys(ALL_DATA).length; indexTag++){
-        if(Object.keys(ALL_DATA)[tag] === tag){ 
-            break;
-        }
-    }
-    
-    
+function displayFlickrResult(tag, NIGHT_MODE){
+
+    console.log("display")
     if(!NIGHT_MODE){            
-        indexTag = indexTag - 1;
         var cpt = 0;
         var circles = d3.select("g").selectAll("circle[class='circle-"+tag+"']") // Très important !
         .data((ALL_DATA)[tag])
@@ -31,7 +22,6 @@ function displayFlickrResult(tag, NIGHT_MODE, periode){
         rightBnd = Math.max.apply(Math,(ALL_DATA)[tag].map(function(o){return o.longitude;}));
     }
     else{
-         indexTag = indexTag - 1;
         var cpt = 0;
         var circles = d3.select("g").selectAll("circle[class='circle-nigth-"+tag+"']") // Très important !
         .data((ALL_DATA_NIGHT)[tag])

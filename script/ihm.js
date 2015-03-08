@@ -35,6 +35,10 @@ function createIHM(){
                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
                 maxZoom: 18
             }).addTo(map);
+            for(tag in Object.keys(ALL_DATA)){
+                $(".circle-"+Object.keys(ALL_DATA)[tag]).remove();
+                displayFlickrResult(Object.keys(ALL_DATA)[tag],NIGHT_MODE);
+            }
         }else{
             $(this).css('background', '#fff');
             $(this).css('color', '#000');
@@ -42,6 +46,10 @@ function createIHM(){
                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
                 maxZoom: 18
             }).addTo(map);
+            for(tag in Object.keys(ALL_DATA)){
+                $(".circle-"+Object.keys(ALL_DATA)[tag]).remove();
+                displayFlickrResult(Object.keys(ALL_DATA)[tag],NIGHT_MODE);
+            }
         }
     });
 
@@ -92,13 +100,31 @@ function createIHM(){
                         var div = L.DomUtil.create('div', 'leaflet-control-command');
                         L.DomEvent.disableClickPropagation(div)
                         div.innerHTML = '<i class="fa fa-bar-chart fa-lg"></i>'; 
-                        div.setAttribute("class","control")			
+                        div.setAttribute("class","control controlChart")			
                         return div;
                     }
     controlCharts.addTo(map);
-
-   
-
+    $(".controlChart").on("click", function(){
+        
+        if(!DISPLAY_CHART){
+            if(REGION_REPARTITION.length === 22){
+                if(Object.keys(ALL_DATA).length !== 0){
+                    $(".controlChart").empty();
+                //    $(".controlChart").html = '<i class="fa fa-bar-chart fa-lg"></i>';
+                 //   $(".controlChart").html('<i class="fa fa-times"></i>');
+                    $(".controlChart").html('<i class="fa fa-bar-chart"></i>');
+                    DISPLAY_CHART = true;
+                    displayBarChart(REGION_REPARTITION);
+                }
+            }
+        }
+        else{
+            DISPLAY_CHART = false;
+            REGION_REPARTITION.forEach(function(d){ delete d.ages });
+            $(".controlChart").empty();
+            $(".controlChart").html ('<i class="fa fa-bar-chart fa-lg"></i>');
+        }
+    });
 }
 
 function createCircle(x,y,r){

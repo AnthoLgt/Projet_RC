@@ -19,3 +19,9 @@ var PURPLE = "#7030A0";
 var COLOR_TAG = [];
 
 var DISPLAY_TAG = [];
+
+var REGION_POP = [];
+var REGION_REPARTITION = [];
+
+
+var DISPLAY_CHART = false;

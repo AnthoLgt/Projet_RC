@@ -11,8 +11,18 @@ function search(tags){
 
 function removeTag(tag){    
     $(".circle-"+tag).remove();
+    REGION_REPARTITION.forEach(function(d){ 
+        if(Object.keys(ALL_DATA).indexOf(tag) === 0){
+            delete d.nbPhotoTag0; 
+        }else if(Object.keys(ALL_DATA).indexOf(tag) === 1){
+            delete d.nbPhotoTag1;
+        }else if(Object.keys(ALL_DATA).indexOf(tag) === 1){
+            delete d.nbPhotoTag2;
+        }
+    });
     delete ALL_DATA[tag];
     delete COLOR_TAG[tag];
+    
     showListTag();
     
 }

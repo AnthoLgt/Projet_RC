@@ -27,7 +27,6 @@ function getAllPageFlick(nbPages, tags, woe, minDate){
      
     var cpt = 1;
     var Data = [];
-    console.log(cpt+" "+nbPages)
     do {
     
         $.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=' + API_KEY + '&accuracy=16&tags='+ tags +'&woe_id='+ woe+'&min_taken_date='+ minDate +'&min_upload_date='+ minDate +'&has_geo=1&page='+cpt+'&extras=geo,date_taken,url_t&format=json&nojsoncallback=1',
@@ -56,6 +55,7 @@ function getAllPageFlick(nbPages, tags, woe, minDate){
                             });
                             var tagsProper = tags.replace(" ","-"); // Pour enlever les problèmes des classes CSS
                             tagsProper = tagsProper.replace(",","-"); // Pour enlever les problèmes des classes CSS
+                            tagsProper = tagsProper.replace("--","-"); // Pour enlever les problèmes des classes CSS
                             ALL_DATA[tagsProper] = DataAllPages;
                             ALL_DATA_NIGHT[tagsProper] = [];
                             DISPLAY_TAG[tagsProper] = true; 
@@ -95,13 +95,13 @@ function getAllPageFlick(nbPages, tags, woe, minDate){
                             }else if(availableYellow){
                                 COLOR_TAG[tagsProper] = YELLOW;
                             }
-                            console.log(COLOR_TAG)
-                            //     console.log(ALL_DATA);
                             var cpt = 0;
 
 
                             showListTag();
                             displayFlickrResult(tagsProper, NIGHT_MODE, DATE_DEFAULT);
+                            
+                            groupBarChart(tags);
                         }
                     }
                 
