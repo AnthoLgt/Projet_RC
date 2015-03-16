@@ -12,12 +12,12 @@ function search(tags){
 function removeTag(tag){    
     $(".circle-"+tag).remove();
     REGION_REPARTITION.forEach(function(d){ 
-        if(Object.keys(ALL_DATA).indexOf(tag) === 0){
-            delete d.nbPhotoTag0; 
-        }else if(Object.keys(ALL_DATA).indexOf(tag) === 1){
-            delete d.nbPhotoTag1;
-        }else if(Object.keys(ALL_DATA).indexOf(tag) === 1){
-            delete d.nbPhotoTag2;
+        if(COLOR_TAG[tag] === "#C00000"){
+            delete d.nbPhotoTagC00000; 
+        }else if(COLOR_TAG[tag] === "#2F75B5"){
+            delete d.nbPhotoTag2F75B5;
+        }else if(COLOR_TAG[tag] === "#FFC106"){
+            delete d.nbPhotoTagFFC106;
         }
     });
     delete ALL_DATA[tag];

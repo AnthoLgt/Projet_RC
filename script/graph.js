@@ -27,24 +27,22 @@ function groupBarChart(tag){
                             tagsProper = tagsProper.replace(",","-"); // Pour enlever les problèmes des classes CSS
                             tagsProper = tagsProper.replace("--","-"); // Pour enlever les problèmes des classes CSS
                             nbPhotos = data3.photos.total;
-                          //  photoRegion[i] = nbPhotos;
                             if(Object.keys(REGION_REPARTITION).length !== 22){
                                 var tmp = {};
                                 tmp["region"] = this.regionInfos.region;
-                                tmp["nbPhotoTag"+Object.keys(ALL_DATA).indexOf(tagsProper)] = nbPhotos / this.regionInfos.population;
+                                var color = (COLOR_TAG)[tagsProper];
+                                color = color.replace("#","");
+                                tmp["nbPhotoTag"+color] = nbPhotos / this.regionInfos.population;
                                 REGION_REPARTITION.push(tmp);
                             }
                             else{
-                             //   console.log(REGION_REPARTITION.[this.regionInfos.region(this.regionInfos.region)])
                              for(regionCur in Object.keys(REGION_REPARTITION)){
                                  if(REGION_REPARTITION[regionCur].region === this.regionInfos.region){
-                                     console.log(REGION_REPARTITION[regionCur])
-                                     REGION_REPARTITION[regionCur]["nbPhotoTag"+Object.keys(ALL_DATA).indexOf(tagsProper)] = nbPhotos / this.regionInfos.population;
+                                     var color = (COLOR_TAG)[tagsProper];
+                                     color = color.replace("#","");
+                                     REGION_REPARTITION[regionCur]["nbPhotoTag"+color] = nbPhotos / this.regionInfos.population;
                                  }
                              }
-                            }
-                            if(Object.keys(REGION_REPARTITION).length === 22){
-                               console.log(REGION_REPARTITION);
                             }
                         }.bind({regionInfos:regionInfos}));
 }
@@ -59,7 +57,7 @@ function groupBarChart(tag){
 
 
 function displayBarChart(data){
-
+    console.log(data)
     data.sort(function(a, b){
 
 
@@ -101,14 +99,14 @@ function displayBarChart(data){
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-     var ageNames = d3.keys(data[0]).filter(function(key) { return key !== "region"; });
+     var valueRegion = d3.keys(data[0]).filter(function(key) { return key !== "region"; });
       
       data.forEach(function(d) {
-        d.ages = ageNames.map(function(region) { return {name: region, value: +d[region]}; });
+        d.ages = valueRegion.map(function(region) { return {name: region, value: +d[region]}; });
       }); 
 
       x0.domain(data.map(function(d) { return d.region; }));
-      x1.domain(ageNames).rangeRoundBands([0, x0.rangeBand()]);
+      x1.domain(valueRegion).rangeRoundBands([0, x0.rangeBand()]);
       y.domain([0, d3.max(data, function(d) { return d3.max(d.ages, function(d) { return d.value; }); })]);
 
       svg.append("g")
@@ -145,10 +143,10 @@ function displayBarChart(data){
           .attr("x", function(d) { return x1(d.name); })
           .attr("y", function(d) { return y(d.value); })
           .attr("height", function(d) { return height - y(d.value); })
-          .style("fill", function(d) { return COLOR_TAG[Object.keys(ALL_DATA)[d.name[d.name.length-1]]]; });
+          .style("fill", function(d) { return "#"+(d.name).split("g")[1]; });
 
       var legend = svg.selectAll(".legend")
-          .data(ageNames.slice().reverse())
+          .data(valueRegion.slice().reverse())
           .enter().append("g")
           .attr("class", "legend")
           .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
@@ -164,9 +162,19 @@ function displayBarChart(data){
           .attr("y", 9)
           .attr("dy", ".35em")
           .style("text-anchor", "end")
-          .style("fill", function(d) { return COLOR_TAG[Object.keys(ALL_DATA)[d[d.length-1]]]})
-          .text(function(d) { return Object.keys(ALL_DATA)[d[d.length-1]]; });
+          .style("fill", function(d) { return "#"+d.split("g")[1]; })
+          .text(function(d) {  return Object.keys(ALL_DATA)[arraySearch(COLOR_TAG,"#"+d.split("g")[1])] ; });
 
 
 }
+
+
+function arraySearch(arr,val) {
+    for (var i=0; i< Object.keys(arr).length; i++){
+        if (arr[Object.keys(arr)[i]] === val) {                   
+            return i;
+        }
+    }
+    return false;
+  }
 
