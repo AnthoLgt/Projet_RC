@@ -25,3 +25,5 @@ var REGION_REPARTITION = [];
 
 
 var DISPLAY_CHART = false;
+
+var POPOVER_DISPLAY = false;

@@ -7,11 +7,28 @@ function createIHM(){
                         var div = L.DomUtil.create('div', 'leaflet-control-command');
                         L.DomEvent.disableClickPropagation(div)
                         div.innerHTML = '<i class="fa fa-question-circle fa-lg"></i>'; 
-                        div.setAttribute("class","control")			
+                        div.setAttribute("class","control controlHelp");
+                        div.setAttribute("data-container", "body");
+                        div.setAttribute("data-toggle", "popover");
+                        div.setAttribute("data-content", "Bouton permettant d'afficher l'aide");
+                        div.setAttribute("data-placement", "right");
                         return div;
                     }
     controlCommandHelp.addTo(map);
-
+    $(".controlHelp").on("click", function(){
+        if(POPOVER_DISPLAY ? POPOVER_DISPLAY = false : POPOVER_DISPLAY = true);
+        if(POPOVER_DISPLAY){
+            $(this).css('background', '#000');
+            $(this).css('color', '#fff');
+            $('[data-toggle="popover"]').popover({trigger: 'manual'});
+            $('[data-toggle="popover"]').popover('show');
+        }
+        else{
+            $(this).css('background', '#fff');
+            $(this).css('color', '#000');
+            $('[data-toggle="popover"]').popover('hide');
+        }
+    });
 
     // Bouton controlant le mode nuit
     var controlNight = L.control({position: 'topleft'});
@@ -19,7 +36,11 @@ function createIHM(){
                         var div = L.DomUtil.create('div', 'leaflet-control-command');
                         L.DomEvent.disableClickPropagation(div)
                         div.innerHTML = '<i class="fa fa-moon-o fa-lg"></i>'; 
-                        div.setAttribute("class","control controlNight")			
+                        div.setAttribute("class","control controlNight");                        
+                        div.setAttribute("data-container", "body");
+                        div.setAttribute("data-toggle", "popover");
+                        div.setAttribute("data-content", "Bouton permettant d'activer/désactiver le mode nuit affichant les photos prises de nuit");
+                        div.setAttribute("data-placement", "bottom");
                         return div;
                     }
     controlNight.addTo(map);
@@ -61,21 +82,26 @@ function createIHM(){
                         var div = L.DomUtil.create('div', 'leaflet-control-command');
                         L.DomEvent.disableClickPropagation(div)
                         div.innerHTML = '\
-                            <form class="form-inline">\
+                           <form class="form-inline">\
                               <div class="form-group">\
-                                <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>\
-                                  <input type="text" class="form-control" id="inputSearchTag" placeholder="Tags..">\
+                                  <input type="text" class="form-control" id="inputSearchTag" style="width:150px" placeholder="Tags..">\
                               </div>\
                               <button type="submit" class="btn btn-default" id="buttonSubmitTag"><i class="fa fa-search"></i></button>\
                             </form>'; 
                         div.setAttribute("class","control");
                         div.setAttribute("id","formInputSearchTag");
+                        div.setAttribute("data-container", "body");
+                        div.setAttribute("data-toggle", "popover");
+                        div.setAttribute("data-content", "Saissisez un tag ou plusieurs tags similaires séparés d\'une virgule");
+                        div.setAttribute("data-placement", "left");
                         return div;
                     }
     controlFormSearch.addTo(map);
      $("#formInputSearchTag").submit(function(event) {
       event.preventDefault(); // Pour ne pas réaliser le comportement par défaut du submit
-      search($('#inputSearchTag').val()); 
+      if($('#inputSearchTag').val() !== ""){
+            search($('#inputSearchTag').val()); 
+        }
      });
 
 
@@ -89,7 +115,11 @@ function createIHM(){
                             <span style="color:grey; text-align=center"><i>Aucun tag</i></span>\
                             </div>\
                             '; 
-                        div.setAttribute("class","control")			
+                        div.setAttribute("class","control");
+                        div.setAttribute("data-container", "body");
+                        div.setAttribute("data-toggle", "popover");
+                        div.setAttribute("data-content", "Zone destinée à stocker les tags recherchés. Possibilité de masquer ou supprimer des tags.");
+                        div.setAttribute("data-placement", "left");
                         return div;
                     }
     controlTagsCheckBox.addTo(map);
@@ -100,7 +130,11 @@ function createIHM(){
                         var div = L.DomUtil.create('div', 'leaflet-control-command');
                         L.DomEvent.disableClickPropagation(div)
                         div.innerHTML = '<i class="fa fa-bar-chart fa-lg"></i>'; 
-                        div.setAttribute("class","control controlChart")			
+                        div.setAttribute("class","control controlChart");
+                        div.setAttribute("data-container", "body");
+                        div.setAttribute("data-toggle", "popover");
+                        div.setAttribute("data-content", "Bouton permettant d'afficher le graphique de répartition du nombre de photos par régions (normalisé par leur population)");
+                        div.setAttribute("data-placement", "right");
                         return div;
                     }
     controlCharts.addTo(map);
@@ -134,5 +168,8 @@ function createCircle(x,y,r){
         fillOpacity: 0.5
     }).addTo(map);
 }
+
+
+
 
 
