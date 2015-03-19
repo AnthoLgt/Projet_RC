@@ -5,7 +5,15 @@ var cpt = 1;
 var nbPages;
 var nbPhotos = 0;
 
-
+/**
+ * Méthode permettant de lancer une requête vers l'API Flickr.
+ * 
+ * On lance une première requête pour connaitre le nombre de photos à récupérer, puis on lance les requêtes nécessaires pour récuperer toutes les pages.
+ * 
+ * @param {type} woe Lieu de recherche
+ * @param {type} tags Tags de recherche
+ * @param {type} minDate Date d'upload minimum
+ */
 function flickSearch(woe, tags, minDate){
 
     console.log("flickSearch");
@@ -16,13 +24,24 @@ function flickSearch(woe, tags, minDate){
             nbPhotos = data3.photos.total
                 $('#myModal').modal('show');
                 $('#modal-titleh4').html(nbPhotos+' photos trouvées');                 
-
-                getAllPageFlick(nbPages, tags, woe, minDate);
+                if(nbPhotos == 0){
+                    $('.modal-footer').html('<i class="fa fa-times fa-lg"></i>')
+                }else{
+                    $('.modal-footer').html('<i class="fa fa-spinner fa-pulse fa-lg"></i>')
+                    getAllPageFlick(nbPages, tags, woe, minDate);
+                }
         });     
 
 }
 
-
+/**
+ * Méthode permettant de récupérer l'ensemble des pages de résultats d'une requête.
+ * 
+ * @param {type} nbPages Le nombre de pages à récupérer
+ * @param {type} tags Tags de recherche
+ * @param {type} woe Lieu de de recherche
+ * @param {type} minDate Date d'upload minimum
+ */
 function getAllPageFlick(nbPages, tags, woe, minDate){   
      
     var cpt = 1;
@@ -96,7 +115,10 @@ function getAllPageFlick(nbPages, tags, woe, minDate){
                                 COLOR_TAG[tagsProper] = YELLOW;
                             }
                             var cpt = 0;
-
+                            if(Object.keys(ALL_DATA).length == 3){
+                                $('#inputSearchTag').val("3 tags maximum");
+                                $('#inputSearchTag').prop('disabled', true);
+                            }
 
                             showListTag();
                             displayFlickrResult(tagsProper, NIGHT_MODE, DATE_DEFAULT);

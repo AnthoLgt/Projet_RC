@@ -1,5 +1,11 @@
 
 
+/**
+ * Méthode permettant d'afficher les résultats (cercles) d'un Tag.
+ * 
+ * @param {type} tag Tag recherché
+ * @param {type} NIGHT_MODE L'activation ou non du mode nuit
+ */
 function displayFlickrResult(tag, NIGHT_MODE){
 
     console.log("display")
@@ -70,20 +76,28 @@ function displayFlickrResult(tag, NIGHT_MODE){
 }
 
 
-
-function showImage(image){
-
-    
+/**
+ * Méthode permettant d'afficher une popup avec l'image qui est survolée.
+ * 
+ * @param {type} image L'image survolée et donc à afficher
+ * @returns {popup} Retourne la popup contenant un aperçu de l'image
+ */
+function showImage(image){    
     console.log(image)
     popup.setLatLng([image.latitude, image.longitude])
     .setContent("<div style=\"width:"+image.width_t+"px;height:"+image.height_t+"px\"><img src="+image.url_t+" /></div>")
     .openOn(map);
     return popup;
-  //  console.log("x="+project(image.longitude, image.latitude).x+" y = "+project(image.longitude, image.latitude).y)
 }
 
 
-
+/**
+ * Méthode permettant de projeter les coordonnées GPS d'une image sur le fond de carte Leaflet.
+ * 
+ * @param {type} longitude Longitude à projeter
+ * @param {type} latitude Latitude à projeter
+ * @returns {unresolved} Le point contenant le x et y correspondant à la projection de la lattitude et de la longitude
+ */
 function project(longitude,latitude) {
     return map.latLngToLayerPoint(new L.LatLng(latitude, longitude));
 }

@@ -9,10 +9,14 @@ var popup;
     
 function createMap(){
     
-    map = new L.Map("map", {center: [46.5, 2], zoom: 6, minZoom: 1, maxZoom: 18, });
+    var attributions = '';
+     if($( window ).width() >= 768){
+            attributions = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>';
+     }
+    map = new L.Map("map", {center: [46.5, 2], zoom: 6, minZoom: 6, maxZoom: 18, });
     // http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
     L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        attribution: attributions,
         maxZoom: 18
     }).addTo(map);
     map._initPathRoot(); 
@@ -22,6 +26,28 @@ function createMap(){
     svg.attr("width", $(window).width()).attr("height", $(window).height());
     
     popup = L.popup();
+    
+    
+    // Plugin geocoder
+    
+
+
+    var options = {
+    collapsed: true, /* Whether its collapsed or not */
+    position: 'bottomright', /* The position of the control */
+    text: 'Locate', /* The text of the submit button */
+    bounds: null, /* a L.LatLngBounds object to limit the results to */
+    email: null, /* an email string with a contact to provide to Nominatim. Useful if you are doing lots of queries */
+    callback: function (results) {
+            var bbox = results[0].boundingbox,
+                first = new L.LatLng(bbox[0], bbox[2]),
+                second = new L.LatLng(bbox[1], bbox[3]),
+                bounds = new L.LatLngBounds([first, second]);
+            this._map.fitBounds(bounds);
+    }
+    };
+    var osmGeocoder = new L.Control.OSMGeocoder(options);
+    map.addControl(osmGeocoder);
 
 }
 

@@ -9,8 +9,12 @@ function createIHM(){
                         div.innerHTML = '<i class="fa fa-question-circle fa-lg"></i>'; 
                         div.setAttribute("class","control controlHelp");
                         div.setAttribute("data-container", "body");
-                        div.setAttribute("data-toggle", "popover");
-                        div.setAttribute("data-content", "Bouton permettant d'afficher l'aide");
+                        div.setAttribute("data-toggle", "popoverHelp");
+                        if($( window ).width() < 768){
+                            div.setAttribute("data-content", "L'aide n'est pas disponible sur portable");
+                        }else{
+                            div.setAttribute("data-content", "Bouton permettant d'afficher l'aide");
+                        }                        
                         div.setAttribute("data-placement", "right");
                         return div;
                     }
@@ -20,15 +24,38 @@ function createIHM(){
         if(POPOVER_DISPLAY){
             $(this).css('background', '#000');
             $(this).css('color', '#fff');
-            $('[data-toggle="popover"]').popover({trigger: 'manual'});
-            $('[data-toggle="popover"]').popover('show');
+            
+            if($( window ).width() >= 768){
+                $('[data-toggle="popover"]').popover({trigger: 'manual'});
+                $('[data-toggle="popover"]').popover('show');
+                $('[data-toggle="popoverNumber"]').attr("data-content", "Bouton affichant le nombres de photos de chaque tag.");
+                $('[data-toggle="popoverNumber"]').popover('show');
+            }
+
+            $('[data-toggle="popoverHelp"]').popover({trigger: 'manual'});
+            $('[data-toggle="popoverHelp"]').popover('show');
+            $('[data-toggle="popoverHelp"]').popover({trigger: 'manual'});
+
         }
         else{
             $(this).css('background', '#fff');
             $(this).css('color', '#000');
-            $('[data-toggle="popover"]').popover('hide');
+            
+            if($( window ).width() >=  768){
+                $('[data-toggle="popover"]').popover('hide');
+            }
+            $('[data-toggle="popoverHelp"]').popover({trigger: 'manual'});
+            $('[data-toggle="popoverHelp"]').popover('hide');
+            $('[data-toggle="popoverNumber"]').popover('hide');
         }
+        
+        
     });
+    
+    $('.leaflet-control-geocoder').attr("data-content", "Geocoder permettant de rechercher une ville et de s'y placer");
+    $('.leaflet-control-geocoder').attr("data-toggle", "popover");
+    $('.leaflet-control-geocoder').attr("data-container", "body");
+    $('.leaflet-control-geocoder').attr("data-placement", "left");
 
     // Bouton controlant le mode nuit
     var controlNight = L.control({position: 'topleft'});
@@ -82,14 +109,16 @@ function createIHM(){
                         var div = L.DomUtil.create('div', 'leaflet-control-command');
                         L.DomEvent.disableClickPropagation(div)
                         div.innerHTML = '\
-                           <form class="form-inline">\
-                              <div class="form-group">\
-                                  <input type="text" class="form-control" id="inputSearchTag" style="width:150px" placeholder="Tags..">\
-                              </div>\
-                              <button type="submit" class="btn btn-default" id="buttonSubmitTag"><i class="fa fa-search"></i></button>\
-                            </form>'; 
+                                <form style="width:200px">\
+                                     <div class="input-group">\
+                                         <input type="text" class="form-control" id="inputSearchTag" style="height:33px" placeholder="Tags..">\
+                                         <span class="input-group-btn">\
+                                               <button type="submit" class="btn btn-default" id="buttonSubmitTag" style="height:33px"><i class="fa fa-search"></i></button>\
+                                         </span>\
+                                    </div>\
+                                 </form>'; 
                         div.setAttribute("class","control");
-                        div.setAttribute("id","formInputSearchTag");
+                        div.setAttribute("id","formInputSearchTag");""
                         div.setAttribute("data-container", "body");
                         div.setAttribute("data-toggle", "popover");
                         div.setAttribute("data-content", "Saissisez un tag ou plusieurs tags similaires séparés d\'une virgule");
@@ -105,6 +134,7 @@ function createIHM(){
      });
 
 
+    // Controleur pour gérer la liste des tags
     var controlTagsCheckBox = L.control({position: 'topright'});
     controlTagsCheckBox.onAdd = function(map){
                         var div = L.DomUtil.create('div', 'leaflet-control-command');
@@ -123,8 +153,50 @@ function createIHM(){
                         return div;
                     }
     controlTagsCheckBox.addTo(map);
+    
+    // Controleur le nombre de photos par tag
+    var controlTagsNumber = L.control({position: 'topright'});
+    controlTagsNumber.onAdd = function(map){
+                        var div = L.DomUtil.create('div', 'leaflet-control-command');
+                        L.DomEvent.disableClickPropagation(div)
+                        div.innerHTML = '\
+                            <i class="fa fa-database fa-lg"></i>'; 
+                        div.setAttribute("class","control controlTagsNumber");
+                        div.setAttribute("data-container", "body");
+                        div.setAttribute("data-toggle", "popoverNumber");
+                        div.setAttribute("data-content", "Zone destinée à stocker le nombre de photos pour chaque tag.");
+                        div.setAttribute("data-placement", "bottom");
+                        div.setAttribute("data-html","true");
+                        return div;
+                    }
+    controlTagsNumber.addTo(map);    
+    $(".controlTagsNumber").on("click", function(){
+        
+         if(Object.keys(ALL_DATA).length !== 0){
+            if(POPOVER_NUMBER_DISPLAY ? POPOVER_NUMBER_DISPLAY = false : POPOVER_NUMBER_DISPLAY = true);
+            if(POPOVER_NUMBER_DISPLAY){
+                $(this).css('background', '#000');
+                $(this).css('color', '#fff');
+                $('[data-toggle="popoverNumber"]').popover({trigger: 'manual'});
+                var htmlTagsNumber = '';
+                for(tag in Object.keys(COLOR_TAG)){
+                    var nomTag = Object.keys(COLOR_TAG)[tag];
+                    htmlTagsNumber = htmlTagsNumber+ '<span id="badge-tag-'+nomTag+'"class="badge" style="background-color:'+(COLOR_TAG)[nomTag]+'">'+ALL_DATA[nomTag].length+' photos ('+ALL_DATA_NIGHT[nomTag].length+' de nuit)</span><br>' 
+                }
+                $('[data-toggle="popoverNumber"]').attr("data-content", htmlTagsNumber);
+                $('[data-toggle="popoverNumber"]').popover('show');
+            }
+            else{
+                $(this).css('background', '#fff');
+                $(this).css('color', '#000');
+                $('[data-toggle="popoverNumber"]').popover('hide');
+            }   
+        }
+        
+    });
 
 
+    // Controleur l'affichage du graphique
     var controlCharts = L.control({position: 'bottomleft'});
     controlCharts.onAdd = function(map){
                         var div = L.DomUtil.create('div', 'leaflet-control-command');
@@ -160,16 +232,3 @@ function createIHM(){
         }
     });
 }
-
-function createCircle(x,y,r){
-    var circle = L.circle([x, y], r, {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5
-    }).addTo(map);
-}
-
-
-
-
-
