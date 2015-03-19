@@ -168,7 +168,7 @@ function createIHM(){
                         div.setAttribute("data-container", "body");
                         div.setAttribute("data-toggle", "popoverNumber");
                         div.setAttribute("data-content", "Zone destinée à stocker le nombre de photos pour chaque tag.");
-                        div.setAttribute("data-placement", "bottom");
+                        div.setAttribute("data-placement", "left");
                         div.setAttribute("data-html","true");
                         return div;
                     }
