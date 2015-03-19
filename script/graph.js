@@ -154,7 +154,8 @@ function displayBarChart(data){
           .attr("x", function(d) { return x1(d.name); })
           .attr("y", function(d) { return y(d.value); })
           .attr("height", function(d) { return height - y(d.value); })
-          .style("fill", function(d) { return "#"+(d.name).split("g")[1]; });
+          .style("fill", function(d) { return "#"+(d.name).split("g")[1]; })
+      //    .append("svg:title").text(function(d) { return "Score : "+y(d.value); });
 
       var legend = svg.selectAll(".legend")
           .data(valueRegion.slice().reverse())
