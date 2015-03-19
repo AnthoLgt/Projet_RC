@@ -11,10 +11,13 @@ var popup;
 function createMap(){
     
     var attributions = '';
-     if($( window ).width() >= 768){
-            attributions = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>';
-     }
-    map = new L.Map("map", {center: [46.5, 2], zoom: 6, minZoom: 6, maxZoom: 18, });
+    var minzoom = 5;
+    if($( window ).width() >= 768){
+        attributions = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>';
+        minzoom = 6;    
+    }
+     
+    map = new L.Map("map", {center: [46.5, 2], zoom: minzoom, minZoom: minzoom, maxZoom: 18, });
     // http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
     L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
         attribution: attributions,

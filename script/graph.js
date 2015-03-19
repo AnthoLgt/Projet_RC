@@ -74,7 +74,7 @@ function displayBarChart(data){
         fontSizeY = ".31em";
         defaultWidth = $(document).width() - 45;
         defaultHeight =  $(document).height() - 45;
-        margin = {top: 20, right: 20, bottom: 50, left: 35};
+        margin = {top: 20, right: 20, bottom: 50, left: 40};
     }else{
         fontSizeX = ".35em";
         fontSizeY = ".71em";
