@@ -1,4 +1,67 @@
 
+/**
+ * Méthode permettant de supprimer un tag
+ * 
+ * @param {type} tag Tag à supprimer
+ */
+function removeTag(tag){    
+    $(".circle-"+tag).remove();
+    REGION_REPARTITION.forEach(function(d){ 
+        if(COLOR_TAG[tag] === "#C00000"){
+            delete d.nbPhotoTagC00000; 
+        }else if(COLOR_TAG[tag] === "#2F75B5"){
+            delete d.nbPhotoTag2F75B5;
+        }else if(COLOR_TAG[tag] === "#FFC106"){
+            delete d.nbPhotoTagFFC106;
+        }
+    });
+    $('#inputSearchTag').val("Tags...");
+    $('#inputSearchTag').prop('disabled', false);
+    delete ALL_DATA[tag];
+    delete COLOR_TAG[tag];
+    
+    showListTag();
+    
+}
+
+/**
+ * Méthode permettant d'afficher/masquer un tag
+ * 
+ * @param {type} tag Tag à afficher/masquer
+ * @returns {undefined}
+ */
+function showTag(tag){
+    if(DISPLAY_TAG[tag]){
+        $('.circle-'+tag+'').hide();
+        DISPLAY_TAG[tag] = false;            
+    }else{
+        $('.circle-'+tag+'').show();
+        DISPLAY_TAG[tag] = true;     
+    }       
+}
+
+/**
+ * Méthode permettant d'afficher les tags dans le contrôleur tags check box
+ */
+function showListTag(){
+    var htmlTags = '';
+    for(tag in Object.keys(COLOR_TAG)){
+        var nomTag = Object.keys(COLOR_TAG)[tag];
+        if(DISPLAY_TAG[nomTag]){ // Checkbox du tag "checked"
+            htmlTags = htmlTags + '<label><input type="checkbox" onchange="showTag(\''+nomTag+'\');" checked><span id="badge-tag-'+nomTag+'"class="badge" style="background-color:'+(COLOR_TAG)[nomTag]+'" onclick="removeTag(\''+nomTag+'\');">'+nomTag+' <i class="fa fa-times"></i></span></label><br>' 
+        }else{
+            htmlTags = htmlTags + '<label><input type="checkbox" onchange="showTag(\''+nomTag+'\');" ><span id="badge-tag-'+nomTag+'"class="badge" style="background-color:'+(COLOR_TAG)[nomTag]+'" onclick="removeTag(\''+nomTag+'\');">'+nomTag+' <i class="fa fa-times"></i></span></label><br>' 
+        }
+        cpt++;
+    }
+    if(Object.keys(ALL_DATA).length == 0){
+        $('#tagsCheckBox').html("<span style=\"color:grey; text-align=center\"><i>Aucun tag</i></span>");
+    }else{
+        $('#tagsCheckBox').html(htmlTags);
+    }    
+}
+
+
 
 /**
  * Méthode permettant d'afficher les résultats (cercles) d'un Tag.
@@ -8,7 +71,6 @@
  */
 function displayFlickrResult(tag, NIGHT_MODE){
 
-    console.log("display")
     if(!NIGHT_MODE){            
         var cpt = 0;
         var circles = d3.select("g").selectAll("circle[class='circle-"+tag+"']") // Très important !
@@ -42,7 +104,6 @@ function displayFlickrResult(tag, NIGHT_MODE){
         .attr("cy", function (d) { return project(d.longitude, d.latitude).y; })
         .on("mouseover", function(d) { return showImage(d); });
 
-        console.log("tag= "+tag+" couleur="+COLOR_TAG[tag]+" occur="+cpt)
 
         topBnd = Math.max.apply(Math,(ALL_DATA_NIGHT)[tag].map(function(o){return o.latitude;}));
         bottomBnd = Math.min.apply(Math,(ALL_DATA_NIGHT)[tag].map(function(o){return o.latitude;}));

@@ -4,11 +4,14 @@
 // EXEMPLE CHIEN, CHAT
 // EXEMPLE SOLO : BATEAU
 
-
+/**
+ * Méthode qui permet de calculer les valeurs du graphique pour le tag passé en paramètre.
+ * 
+ * @param {type} tag Tag pour lequel il faut calculer les valeurs du graphique
+ */
 function groupBarChart(tag){
             
-    d3.csv("region.csv", function(data) {
-
+    d3.csv("data/region.csv", function(data) {
 
                 for(i = 0; i < data.length; i++){
                     var tmp = {};
@@ -16,8 +19,7 @@ function groupBarChart(tag){
                     tmp["population"] = data[i].population;
 
                     var regionInfos = data[i];
-                    REGION_POP.push(tmp);
-                       
+                    REGION_POP.push(tmp);                     
             
                     $.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=' + API_KEY + '&accuracy=16&tags='+ tag +'&woe_id='+ data[i].woeid +'&min_taken_date='+ DATE_DEFAULT +'&min_upload_date='+ DATE_DEFAULT +'&has_geo=1&page=1&extras=geo&format=json&nojsoncallback=1',
                         function(data3){
@@ -45,16 +47,15 @@ function groupBarChart(tag){
                             }
                         }.bind({regionInfos:regionInfos}));
                     }
-     
     });
 }
 
 
 
-
-
-
-
+/**
+ * Méthode qui permet d'afficher le graphique avec les valeurs passées en paramètre.
+ * @param {type} data Les données à afficher
+ */
 function displayBarChart(data){
     
     data.sort(function(a, b){
@@ -177,11 +178,15 @@ function displayBarChart(data){
               var nomTag =  Object.keys(ALL_DATA)[arraySearch(COLOR_TAG,"#"+d.split("g")[1])];
               return nomTag;
             });
-
-
 }
 
-
+/**
+ * Fonction qui permet de chercher une valeur dans un tableau.
+ * 
+ * @param {type} arr Le tableau dans lequel rechercher la valeur
+ * @param {type} val La valeur à rechercher
+ * @returns {Boolean|Number} Retourne faux si la valeur n'a pas été trouver ou l'index s'il a été trouvé
+ */
 function arraySearch(arr,val) {
     for (var i=0; i< Object.keys(arr).length; i++){
         if (arr[Object.keys(arr)[i]] === val) {                   

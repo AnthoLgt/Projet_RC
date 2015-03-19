@@ -1,4 +1,7 @@
 
+/**
+ * Méthode qui créé l'ensemble des contrôleurs de l'IHM
+ */
 function createIHM(){
 
     // Bouton controlant le mode aide
@@ -216,8 +219,6 @@ function createIHM(){
             if(REGION_REPARTITION.length === 22){
                 if(Object.keys(ALL_DATA).length !== 0){
                     $(".controlChart").empty();
-                //    $(".controlChart").html = '<i class="fa fa-bar-chart fa-lg"></i>';
-                 //   $(".controlChart").html('<i class="fa fa-times"></i>');
                     $(".controlChart").html('<i class="fa fa-bar-chart"></i>');
                     DISPLAY_CHART = true;
                     displayBarChart(REGION_REPARTITION);

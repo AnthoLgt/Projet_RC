@@ -1,12 +1,13 @@
 
-
-
 var map;
 var g;
 var transform;
 var svg;
 var popup;
-    
+   
+/**
+ * Méthode qui permet de créer le fond de carte en utilisant Leaflet
+ */
 function createMap(){
     
     var attributions = '';
@@ -29,9 +30,6 @@ function createMap(){
     
     
     // Plugin geocoder
-    
-
-
     var options = {
     collapsed: true, /* Whether its collapsed or not */
     position: 'bottomright', /* The position of the control */
@@ -44,14 +42,9 @@ function createMap(){
                 second = new L.LatLng(bbox[1], bbox[3]),
                 bounds = new L.LatLngBounds([first, second]);
             this._map.fitBounds(bounds);
-    }
+        }
     };
     var osmGeocoder = new L.Control.OSMGeocoder(options);
     map.addControl(osmGeocoder);
 
-}
-
-function projectPoint(x, y) {
-  var point = map.latLngToLayerPoint(new L.LatLng(y, x));
-  this.stream.point(point.x, point.y);
 }
